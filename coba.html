@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Surprise</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .character-container {
+            position: relative;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+        
+        .character {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            display: inline-block;
+            animation: bounce 2s infinite ease-in-out;
+        }
+        
+        .head {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            border: 3px solid #333;
+            position: relative;
+            margin: 0 auto;
+            animation: headBob 3s infinite ease-in-out;
+        }
+        
+        .eyes {
+            position: absolute;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+        
+        .eye {
+            width: 4px;
+            height: 4px;
+            background: #333;
+            border-radius: 50%;
+            animation: blink 4s infinite;
+        }
+        
+        .mouth {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 4px;
+            border: 2px solid #333;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .body {
+            width: 40px;
+            height: 35px;
+            background: white;
+            border: 3px solid #333;
+            border-radius: 20px;
+            margin: 5px auto;
+            position: relative;
+        }
+        
+        .arms {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .arm {
+            width: 20px;
+            height: 3px;
+            background: #333;
+            border-radius: 3px;
+            position: absolute;
+        }
+        
+        .arm.left {
+            left: -15px;
+            transform: rotate(30deg);
+            animation: armWave 2s infinite ease-in-out;
+        }
+        
+        .arm.right {
+            right: -15px;
+            transform: rotate(-30deg);
+        }
+        
+        .candle {
+            position: absolute;
+            right: -50px;
+            top: 20px;
+            width: 25px;
+            height: 60px;
+            animation: candleFloat 3s infinite ease-in-out;
+        }
+        
+        .candle-base {
+            width: 25px;
+            height: 35px;
+            background: #ff6b6b;
+            border: 2px solid #333;
+            border-radius: 0 0 5px 5px;
+            position: relative;
+        }
+        
+        .candle-top {
+            width: 25px;
+            height: 8px;
+            background: #4ecdc4;
+            border: 2px solid #333;
+            border-bottom: none;
+            position: absolute;
+            top: -8px;
+        }
+        
+        .flame {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 18px;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: flameFlicker 1s infinite ease-in-out alternate;
+        }
+        
+        .flame::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 10px;
+            background: #feca57;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        }
+        
+        .sparkles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #feca57;
+            border-radius: 50%;
+            animation: sparkleFloat 2s infinite ease-in-out;
+        }
+        
+        .sparkle:nth-child(1) {
+            top: 10%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+        
+        .sparkle:nth-child(2) {
+            top: 30%;
+            right: 15%;
+            animation-delay: 0.5s;
+        }
+        
+        .sparkle:nth-child(3) {
+            bottom: 20%;
+            left: 10%;
+            animation-delay: 1s;
+        }
+        
+        .title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4a90e2;
+            margin-bottom: 0.5rem;
+            animation: titleGlow 2s infinite ease-in-out;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .message {
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+        
+        .surprise-btn {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+            animation: buttonPulse 2s infinite ease-in-out;
+        }
+        
+        .surprise-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+            background: linear-gradient(135deg, #357abd, #4a90e2);
+        }
+        
+        .surprise-btn:active {
+            transform: translateY(0);
+        }
+        
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        .confetti-piece {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ff6b6b;
+            animation: confettiFall 3s infinite ease-in;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes headBob {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(2deg); }
+            75% { transform: rotate(-2deg); }
+        }
+        
+        @keyframes blink {
+            0%, 90%, 100% { transform: scaleY(1); }
+            95% { transform: scaleY(0.1); }
+        }
+        
+        @keyframes armWave {
+            0%, 100% { transform: rotate(30deg); }
+            50% { transform: rotate(60deg); }
+        }
+        
+        @keyframes candleFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(2deg); }
+        }
+        
+        @keyframes flameFlicker {
+            0% { transform: translateX(-50%) scale(1) rotate(-1deg); }
+            100% { transform: translateX(-50%) scale(1.1) rotate(1deg); }
+        }
+        
+        @keyframes sparkleFloat {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 1; }
+            50% { transform: translateY(-20px) scale(0.5); opacity: 0.5; }
+        }
+        
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 5px rgba(74, 144, 226, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(74, 144, 226, 0.6); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes buttonPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .title {
+                font-size: 1.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .character {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .candle {
+                right: -40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="character-container">
+            <div class="character">
+                <div class="head">
+                    <div class="eyes">
+                        <div class="eye"></div>
+                        <div class="eye"></div>
+                    </div>
+                    <div class="mouth"></div>
+                </div>
+                <div class="body">
+                    <div class="arms">
+                        <div class="arm left"></div>
+                        <div class="arm right"></div>
+                    </div>
+                </div>
+                <div class="candle">
+                    <div class="flame"></div>
+                    <div class="candle-top"></div>
+                    <div class="candle-base"></div>
+                </div>
+            </div>
+            <div class="sparkles">
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+            </div>
+        </div>
+        
+        <h1 class="title">Happy Birthday sayangkuu</h1>
+        <p class="subtitle">~(˘▾˘~) ♡</p>
+        <p class="message">your next surprise is just a click away ✨</p>
+        
+        <button class="surprise-btn" onclick="goToNextPage()">tap &lt;3</button>
+    </div>
+    
+    <div class="confetti" id="confetti"></div>
+    
+    <script>
+        // Confetti animation
+        function createConfetti() {
+            const confetti = document.getElementById('confetti');
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b', '#eb4d4b'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confettiPiece = document.createElement('div');
+                confettiPiece.className = 'confetti-piece';
+                confettiPiece.style.left = Math.random() * 100 + '%';
+                confettiPiece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confettiPiece.style.animationDelay = Math.random() * 3 + 's';
+                confettiPiece.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confetti.appendChild(confettiPiece);
+            }
+        }
+        
+        // Button click handler
+        function goToNextPage() {
+            // Add click effect
+            const btn = document.querySelector('.surprise-btn');
+            btn.style.transform = 'scale(0.95)';
+            
+            // Create more confetti
+            createConfetti();
+            
+            // Add screen flash effect
+            document.body.style.background = 'linear-gradient(135deg, #ff6b6b, #4ecdc4)';
+            
+            setTimeout(() => {
+                document.body.style.background = 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)';
+                btn.style.transform = 'scale(1)';
+            }, 200);
+            
+            // Here you can add navigation to next page
+            setTimeout(() => {
+                // For demo purposes, we'll just show an alert
+                // In real implementation, you would navigate to the next page
+                alert('🎉 Surprise! This is where you would navigate to the next page! 🎉');
+                
+                // Example navigation:
+                // window.location.href = 'next-page.html';
+                // Or if using single page app:
+                // showNextPage();
+            }, 1000);
+        }
+        
+        // Initialize confetti on page load
+        window.addEventListener('load', () => {
+            setTimeout(createConfetti, 500);
+        });
+        
+        // Add periodic confetti
+        setInterval(createConfetti, 5000);
+    </script>
+</body>
+</html>
